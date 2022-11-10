@@ -36,7 +36,7 @@ class Coverage{
         this.team[tipo.nome] = tipo;
     }
 
-    length(){
+    Blength(){
         let count = 0;
         for (let k in this.cover){
             count++;
@@ -44,12 +44,22 @@ class Coverage{
         return count;
     }
 
+    Tlength(){
+        let count = 0;
+        for (let k in this.team){
+            count++;
+        }
+        return count;
+    }
+
     isFull(){
-        if (this.length() == 18){
+        if (this.Blength() == 18){
             return true;
         }
         return false;
     }
+
+
     //testare 
     NotNeeded(){
         var count= 0;
@@ -106,24 +116,28 @@ function eliminate(coverage,tobeat){
     for (let k=0;k< tobeat.length;k++){//ciclo su tobeat 
         for (let k1 in coverage.cover){//ciclo su cover
             if (k1 == tobeat[k].nome){//confronto i nomi in cover per eliminarlo dall'array tobeat
-                console.log(tobeat.splice(k,1));//elimino i nomi di troppo
+                tobeat.splice(k,1);//elimino i nomi di troppo
             }
         }
     }
 }
 
-//funzione che calcola e ritorna il tipo da aggiungere alla coverage
-function calcdeb(coverage,tobeat,beaten){
-    if (tobeat.length == 0)return;
-    eliminate(coverage,tobeat);
+function missing(tobeat){
     //oggetto contenente tutti i tipi con le loro occorrenze
     obj = {"normale":0,"lotta":0,"volante":0,"veleno":0,"terra":0,"roccia":0,"coleottero":0,"spettro":0,"acciaio":0,"fuoco":0,"acqua":0,"erba":0,"elettro":0,"psico":0,"ghiaccio":0,"drago":0,"buio":0,"folletto":0};
-    //ciclo per cercare il prossimo tipo da aggiungere
     for (let k = 0;k<tobeat.length;k++){//ciclo su tobeat
         for (let k1 = 0;k1< tobeat[k].weak.length;k1++){
             obj[tobeat[k].weak[k1]]++ ;//aumento l'occorrenza del tipo in obj
         }
     }
+}
+//funzione che calcola e ritorna il tipo da aggiungere alla coverage
+function calcdeb(coverage,tobeat,beaten){
+    if (tobeat.length == 0)return;
+    //funzione che elimina i tipi già coperti
+    eliminate(coverage,tobeat);
+    //ciclo per cercare il prossimo tipo da aggiungere
+    missing(tobeat)
     //calcolo del tipo da aggiungere
     var x = MaxObj(obj);
     //funzione che ritorna il tipo
@@ -133,12 +147,13 @@ function calcdeb(coverage,tobeat,beaten){
 //funzione che completa una coverage data in input
 function Complete(coverage,tobeat,beaten){
     //caso base
-    if (coverage.isFull())return;
+    if (coverage.isFull())return console.log(coverage.team,coverage.Tlength(),"tipi necessari per completare la coverage");
     x = calcdeb(coverage,tobeat,beaten);//funzione che ritorna il tipo da aggiungere;
     coverage.addBeaten(x);//aggiunta di quello che batte il tipo calcolato
     Complete(coverage,tobeat,beaten);//chiamata ricorsiva
     coverage.NotNeeded();
-    return console.log(coverage.team,"tipi necessari per completare la coverage");
+    return ;
+    
 }
 
 //dichiarazione dei tipi pokemon
@@ -160,24 +175,15 @@ var ghiaccio = new Tipo("ghiaccio",["volante","erba","terra","drago"],["lotta","
 var drago = new Tipo("drago",["drago"],["drago","ghiaccio","folletto"]);
 var buio = new Tipo("buio",["spettro","psico"],["lotta","coleottero","folletto"]);
 var folletto = new Tipo("folletto",["drago","buio","lotta"],["acciaio","veleno"]);
+
+
 //array tobeat da usare nel calcolo del coverage
 var tobeat = [normale,lotta,volante,veleno,terra,roccia,coleottero,spettro,acciaio,fuoco,acqua,erba,elettro,psico,ghiaccio,drago,buio,folletto];
 var beaten = [normale,lotta,volante,veleno,terra,roccia,coleottero,spettro,acciaio,fuoco,acqua,erba,elettro,psico,ghiaccio,drago,buio,folletto];
 //dichiarazione coverage da completare
 var cov1 = new Coverage();
-
+//tipo inziale da aggiungere 
 cov1.addBeaten(terra);
-/*
-x = calcdeb(cov1,tobeat,beaten);
-console.log(x)
-console.log(x)
-cov1.addBeaten(x);
-x1 = calcdeb(cov1,tobeat,beaten);
-console.log(x1)
-cov1.addBeaten(x1)
-/*
-console.log(cov1.length())
-console.log(cov1.cover)
-*/
+//funzione che completa la coverage
 Complete(cov1,tobeat,beaten);
-
+ 
