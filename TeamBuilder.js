@@ -3,6 +3,7 @@ const tipi = require('./Tipi')
 const pokemon = require('./Pokemon');
 const squadra = require('./Team');
 
+//suggerisco un team di pokemon
 function build(coverage,squadra,dex){
     //calcolo le combinazioni
     coverage.Permuta();
@@ -33,7 +34,7 @@ c1 = new mod.Coverage();
 t1 = new mod.ArrayTipi();
 listatipi = new mod.ArrayTipi();
 s1 = new squadra.team();
-c1.addBeaten(tipi.terra);
+//c1.addBeaten(tipi.terra);
 mod.Complete(c1,t1.tobeat,listatipi.tobeat);
 c1.Permuta();
 //build(c1,s1.team,pokemon.dex.dex)

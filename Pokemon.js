@@ -28,6 +28,6 @@ d.add(pikachu);
 d.add(jigglypuff);
 //d.add(donphan);
 //d.add()
-console.log(d);
+//console.log(d);
 exports.dex = d;
 //exports.pokemon = Pokemon;

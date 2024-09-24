@@ -123,12 +123,15 @@ class ArrayTipi{
 //funzione che completa una coverage data in input
  function Complete(coverage,tobeat,beaten){
     //caso base
-    if (coverage.isFull())return console.log(coverage.team,coverage.length(coverage.team),"tipi necessari per completare la coverage");
+    if (coverage.isFull()){
+        // Usa map per raccogliere i valori in una lista
+        let coverageLine = Object.keys(coverage.team).map(k => k).join(', ');
+        console.log("Coverage:",coverageLine,"\n",coverage.length(coverage.team),"tipi necessari per completare la coverage");
+        return;
+    }
     x = calcdeb(coverage,tobeat,beaten);//funzione che ritorna il tipo da aggiungere;
     coverage.addBeaten(x);//aggiunta di quello che batte il tipo calcolato
     Complete(coverage,tobeat,beaten);//chiamata ricorsiva
-    return;
-    
 }
 
 //variabili esportate dal file

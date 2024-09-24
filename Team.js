@@ -16,6 +16,6 @@ class Team{
 }
 
 t1 = new Team();
-t1.add("elettro");
-t1.display();
+// t1.add("elettro");
+// t1.display();
 exports.team = Team;
